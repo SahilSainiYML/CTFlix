@@ -1,11 +1,17 @@
 import "./App.css";
+import Body from "./Components/Body";
+import Browse from "./Components/Browse";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 function App() {
+  const router = createBrowserRouter([
+    { path: "/", element: <Body /> },
+    { path: "/browse", element: <Browse /> },
+  ]);
+
   return (
     <div>
-      <header>
-        <p className="text-2xl">Hello World!!</p>
-      </header>
+      <RouterProvider router={router} />
     </div>
   );
 }
