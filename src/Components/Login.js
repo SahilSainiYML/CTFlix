@@ -1,13 +1,26 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Header from "./Header";
+import { validateCreds } from "../Utilities/validation";
 
 const Login = () => {
   const [isSigningIn, setIsSigningIn] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const nameRef = useRef(null);
+  const emailRef = useRef();
+  const passwordRef = useRef(null);
+
   const toggalSignIn = () => {
     setIsSigningIn(!isSigningIn);
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setErrorMessage(
+      validateCreds(emailRef.current.value, passwordRef.current.value)
+    );
+  };
   const inputClass = "p-4 my-4 w-full rounded-sm  bg-gray-700";
-  const buttonClass = "p-4 my-6 bg-red-900 w-full rounded-sm";
+  const buttonClass = "p-4 my-6 bg-red-700 w-full rounded-sm";
   return (
     <div>
       <Header />
@@ -17,21 +30,35 @@ const Login = () => {
           alt="main img"
         />
       </div>
-      <form className="absolute w-3/12 p-12 my-36 bg-black opacity-85 mx-auto right-0 left-0 text-white rounded-sm">
-        <h1 className="p-2 my-4 font-bold text-3xl">
+      <form className="absolute w-3/12 p-12 my-36 bg-black bg-opacity-70 mx-auto right-0 left-0 text-white rounded-sm">
+        <h1 className="py-4 my-4 font-bold text-3xl">
           {isSigningIn ? "Sign In" : "Sign Up"}
         </h1>
         {!isSigningIn && (
-          <input type="text" placeholder="Full Name" className={inputClass} />
+          <input
+            ref={nameRef}
+            type="text"
+            placeholder="Full Name"
+            className={inputClass}
+          />
         )}
 
         <input
+          ref={emailRef}
           type="text"
           placeholder="Email or Mobile"
           className={inputClass}
         />
-        <input type="password" placeholder="Password" className={inputClass} />
-        <button className={buttonClass}>Sign in</button>
+        <input
+          ref={passwordRef}
+          type="password"
+          placeholder="Password"
+          className={inputClass}
+        />
+        <p className="text-red-600 font-bold">{errorMessage}</p>
+        <button className={buttonClass} onClick={handleSubmit}>
+          Sign in
+        </button>
         <h2 className="p-2 cursor-pointer" onClick={toggalSignIn}>
           {isSigningIn ? "New To CTFlix? Sing Up" : "Aready a member? Sign In"}
         </h2>
