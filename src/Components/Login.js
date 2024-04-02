@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import Header from "./Header";
-import { validateCreds } from "../Utilities/validation";
+import { validateCreds, validateName } from "../Utilities/validation";
 
 const Login = () => {
   const [isSigningIn, setIsSigningIn] = useState(true);
@@ -18,6 +18,14 @@ const Login = () => {
     setErrorMessage(
       validateCreds(emailRef.current.value, passwordRef.current.value)
     );
+    if (!isSigningIn) {
+      setErrorMessage((previousValue) => {
+        if (!previousValue) {
+          return validateName(nameRef.current.value);
+        }
+        return previousValue;
+      });
+    }
   };
   const inputClass = "p-4 my-4 w-full rounded-sm  bg-gray-700";
   const buttonClass = "p-4 my-6 bg-red-700 w-full rounded-sm";
@@ -57,7 +65,7 @@ const Login = () => {
         />
         <p className="text-red-600 font-bold">{errorMessage}</p>
         <button className={buttonClass} onClick={handleSubmit}>
-          Sign in
+          {isSigningIn ? "Sign In" : "Sign Up"}
         </button>
         <h2 className="p-2 cursor-pointer" onClick={toggalSignIn}>
           {isSigningIn ? "New To CTFlix? Sing Up" : "Aready a member? Sign In"}

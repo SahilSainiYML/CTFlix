@@ -11,3 +11,12 @@ export const validateCreds = (email, password) => {
     return "Either the email or the password is incorrect.";
   }
 };
+
+export const validateName = (name) => {
+  if (!/^[a-zA-Z]+$/.test(name)) {
+    console.log("Please", name);
+    return "Please enter a valid name";
+  }
+  console.log(name);
+  return null;
+};
