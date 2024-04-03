@@ -10,6 +10,7 @@ export const validateCreds = (email, password) => {
   if (!(validateEmail(email) && validatePassword(password))) {
     return "Either the email or the password is incorrect.";
   }
+  return null;
 };
 
 export const validateName = (name) => {
@@ -17,6 +18,5 @@ export const validateName = (name) => {
     console.log("Please", name);
     return "Please enter a valid name";
   }
-  console.log(name);
   return null;
 };

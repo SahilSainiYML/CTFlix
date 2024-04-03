@@ -1,6 +1,11 @@
 import { useRef, useState } from "react";
 import Header from "./Header";
 import { validateCreds, validateName } from "../Utilities/validation";
+import { auth } from "../Utilities/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 const Login = () => {
   const [isSigningIn, setIsSigningIn] = useState(true);
@@ -15,16 +20,58 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrorMessage(
-      validateCreds(emailRef.current.value, passwordRef.current.value)
+    let errorMessage = validateCreds(
+      emailRef.current.value,
+      passwordRef.current.value
     );
+    if (errorMessage !== null) {
+      setErrorMessage(errorMessage);
+      return;
+    }
     if (!isSigningIn) {
-      setErrorMessage((previousValue) => {
-        if (!previousValue) {
-          return validateName(nameRef.current.value);
-        }
-        return previousValue;
-      });
+      errorMessage = validateName(nameRef.current.value);
+    }
+    if (errorMessage !== null) {
+      setErrorMessage(errorMessage);
+      return;
+    }
+
+    if (isSigningIn) {
+      signInWithEmailAndPassword(
+        auth,
+        emailRef.current.value,
+        passwordRef.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          // An error happened.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(error.message);
+          //...
+        });
+    } else {
+      createUserWithEmailAndPassword(
+        auth,
+        emailRef.current.value,
+        passwordRef.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          // An error happened.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(error.message);
+          //...
+        });
     }
   };
   const inputClass = "p-4 my-4 w-full rounded-sm  bg-gray-700";
