@@ -5,11 +5,16 @@ import { auth } from "../Utilities/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
+
+import { useDispatch } from "react-redux";
+import { addUser } from "../Reducers/reducers";
 
 const Login = () => {
   const [isSigningIn, setIsSigningIn] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const dispatch = useDispatch();
   const nameRef = useRef(null);
   const emailRef = useRef();
   const passwordRef = useRef(null);
@@ -42,17 +47,9 @@ const Login = () => {
         emailRef.current.value,
         passwordRef.current.value
       )
-        .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          console.log(user);
-        })
+        .then((userCredential) => {})
         .catch((error) => {
-          // An error happened.
-          const errorCode = error.code;
-          const errorMessage = error.message;
           setErrorMessage(error.message);
-          //...
         });
     } else {
       createUserWithEmailAndPassword(
@@ -61,14 +58,21 @@ const Login = () => {
         passwordRef.current.value
       )
         .then((userCredential) => {
-          // Signed in
-          const user = userCredential.user;
-          console.log(user);
+          updateProfile(userCredential.user, {
+            displayName: nameRef.current.value,
+          }).then(() => {
+            const { uid, email, displayName } = auth.currentUser;
+            dispatch(
+              addUser({
+                uid: uid,
+                email: email,
+                displayName: displayName,
+              })
+            );
+          });
         })
         .catch((error) => {
           // An error happened.
-          const errorCode = error.code;
-          const errorMessage = error.message;
           setErrorMessage(error.message);
           //...
         });

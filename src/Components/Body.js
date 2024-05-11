@@ -1,6 +1,38 @@
 import Login from "./Login";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../Utilities/firebase";
+import { addUser, removeUser } from "../Reducers/reducers";
+import { useNavigate } from "react-router-dom";
 
 const Body = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  console.log("body");
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("onAuthStateChanged", user);
+      if (user) {
+        const { uid, email, displayName, photoURL } = user;
+        dispatch(
+          addUser({
+            uid: uid,
+            email: email,
+            displayName: displayName,
+            photoURL: photoURL,
+          })
+        );
+        navigate("/browse");
+      } else {
+        dispatch(removeUser());
+        navigate("/");
+      }
+    });
+
+    // Unsiubscribe when component unmounts
+    return () => unsubscribe();
+  }, []);
   return (
     <div>
       <Login />
