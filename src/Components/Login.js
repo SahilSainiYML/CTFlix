@@ -9,7 +9,12 @@ import {
 } from "firebase/auth";
 
 import { useDispatch } from "react-redux";
-import { addUser } from "../Reducers/reducers";
+import { addUser } from "../Reducers/userSlice";
+import {
+  ALREADY_MEMBER,
+  MAIN_BG_IMG,
+  NEW_MEMBER,
+} from "../Utilities/constants";
 
 const Login = () => {
   const [isSigningIn, setIsSigningIn] = useState(true);
@@ -83,11 +88,8 @@ const Login = () => {
   return (
     <div>
       <Header />
-      <div className="absolute">
-        <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/7ca5b7c7-20aa-42a8-a278-f801b0d65fa1/fb548c0a-8582-43c5-9fba-cd98bf27452f/IN-en-20240326-popsignuptwoweeks-perspective_alpha_website_large.jpg"
-          alt="main img"
-        />
+      <div className="absolute w-full h-full">
+        <img className="w-full h-full" src={MAIN_BG_IMG} alt="main img" />
       </div>
       <form className="absolute w-3/12 p-12 my-36 bg-black bg-opacity-70 mx-auto right-0 left-0 text-white rounded-sm">
         <h1 className="py-4 my-4 font-bold text-3xl">
@@ -119,7 +121,7 @@ const Login = () => {
           {isSigningIn ? "Sign In" : "Sign Up"}
         </button>
         <h2 className="p-2 cursor-pointer" onClick={toggalSignIn}>
-          {isSigningIn ? "New To CTFlix? Sing Up" : "Aready a member? Sign In"}
+          {isSigningIn ? NEW_MEMBER : ALREADY_MEMBER}
         </h2>
       </form>
     </div>

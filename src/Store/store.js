@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import reducers from "../Reducers/reducers";
+import userReducer from "../Reducers/userSlice";
+import nowPlayingReducer from "../Reducers/nowPlayingSlice";
 
 const userStore = configureStore({
   reducer: {
-    user: reducers,
+    user: userReducer,
+    nowPlaying: nowPlayingReducer,
   },
 });
 
