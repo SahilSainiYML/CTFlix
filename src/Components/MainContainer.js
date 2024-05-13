@@ -6,7 +6,7 @@ const MainContainer = () => {
   const movies = useSelector((store) => store.nowPlaying.nowPlaying);
   if (movies) {
     return (
-      <div className="h-full">
+      <div className="h-screen">
         <MainVideoInfo
           title={movies[0].title}
           description={movies[0].overview}

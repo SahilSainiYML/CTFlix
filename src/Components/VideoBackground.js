@@ -18,7 +18,7 @@ const VideoBackground = ({ movieId }) => {
   if (videoId) {
     return (
       <iframe
-        className="w-full aspect-video"
+        className="w-screen aspect-video"
         src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0`}
         title="YouTube video player"
       ></iframe>

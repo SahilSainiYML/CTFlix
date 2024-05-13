@@ -1,6 +1,6 @@
 const MainVideoInfo = ({ title, description }) => {
   return (
-    <div className="absolute text-white pt-[20%] px-24">
+    <div className="absolute text-white pt-[30%] px-24">
       <h1 className="text-3xl font-bold">{title}</h1>
       <h2 className="w-1/3">{description}</h2>
       <div>
